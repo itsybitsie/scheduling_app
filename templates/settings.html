@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Settings</h2>
+<form method="POST" class="settings-form">
+    <label>Business Name:</label>
+    <input type="text" name="business_name" value="{{ settings.business_name }}">
+    <label>Contact Email:</label>
+    <input type="email" name="contact_email" value="{{ settings.contact_email }}">
+    <button type="submit">Save Settings</button>
+</form>
+{% endblock %}

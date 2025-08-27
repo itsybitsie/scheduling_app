@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Edit Job</h2>
+<form method="POST" class="job-form">
+    <input type="text" name="customer" value="{{ job.customer }}" required>
+    <input type="text" name="description" value="{{ job.description }}">
+    <input type="date" name="date" value="{{ job.date }}" required>
+    <input type="time" name="time" value="{{ job.time }}">
+    <button type="submit">Save Changes</button>
+</form>
+{% endblock %}

@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Schedule Jobs</h2>
+
+<!-- Job Form -->
+<form method="POST" class="job-form">
+    <input type="text" name="customer" placeholder="Customer Name" required>
+    <input type="text" name="description" placeholder="Job Description">
+    <input type="date" name="date" required>
+    <input type="time" name="time">
+    <button type="submit">Add Job</button>
+</form>
+
+<!-- Calendar Navigation -->
+<div class="calendar-nav">
+    <a href="{{ url_for('schedule', year=prev_year, month=prev_month) }}">Prev</a>
+    <strong>{{ month }}/{{ year }}</strong>
+    <a href="{{ url_for('schedule', year=next_year, month=next_month) }}">Next</a>
+</div>
+
+<!-- Calendar -->
+<div class="calendar">
+    <div class="week header">
+        <div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div>
+    </div>
+    {% for week in month_days %}
+    <div class="week">
+        {% for day in week %}
+        {% if day == 0 %}
+            <div class="empty"></div>
+        {% else %}
+            <div class="day">
+                <strong>{{ day }}</strong>
+                {% set date_str = year|string + "-" + "%02d"|format(month) + "-" + "%02d"|format(day) %}
+                {% if date_str in jobs_by_date %}
+                    <ul>
+                    {% for job in jobs_by_date[date_str] %}
+                        <li>
+                            {{ job.customer }} @ {{ job.time }}
+                            <a href="{{ url_for('edit_job', job_id=job.id) }}" class="btn-small">Edit</a>
+                            <a href="{{ url_for('delete_job', job_id=job.id) }}" class="btn-small delete">Delete</a>
+                        </li>
+                    {% endfor %}
+                    </ul>
+                {% endif %}
+            </div>
+        {% endif %}
+        {% endfor %}
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}
