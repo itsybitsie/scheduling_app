@@ -3,20 +3,34 @@
 <h2>Clients</h2>
 
 <form method="POST" class="client-form">
-    <input type="text" name="name" placeholder="Name" required>
-    <input type="text" name="phone" placeholder="Phone">
-    <input type="email" name="email" placeholder="Email">
-    <input type="text" name="address" placeholder="Address">
-    <textarea name="notes" placeholder="Notes"></textarea>
+    <label for="name">Name:</label>
+    <input type="text" name="name" placeholder="Name" required><br>
+
+    <label for="phone">Phone:</label>
+    <input type="text" name="phone" placeholder="Phone"><br>
+
+    <label for="email">Email:</label>
+    <input type="email" name="email" placeholder="Email"><br>
+
+    <label for="address">Address:</label>
+    <input type="text" name="address" placeholder="Address"><br>
+
+    <label for="notes">Notes:</label>
+    <textarea name="notes" placeholder="Notes"></textarea><br>
     <button type="submit">Add Client</button>
 </form>
 
-<h3>Client List</h3>
-<ul>
-{% for client in clients %}
-    <li>{{ client.name }} - {{ client.phone }} - {{ client.email }}</li>
-{% else %}
-    <li>No clients added yet.</li>
+<hr>
+{% for client in clients%}
+  <div>
+    <strong>{{ client.name }}</strong> ({{ client.phone }})<br>
+    {{ client.email }} | {{ client.address }} | {{ client.notes }}
+    <form action="{{ url_for('delete_client', id=client.id) }}" method="POST" style="display:inline;">
+      <button type="submit" class="btn btn-delete">Delete</button>
+    </form>
+    <a href="{{ url_for('edit_client', id=client.id) }}" class="btn btn-edit">Edit</a>
+  </div>
+<hr>
 {% endfor %}
-</ul>
+
 {% endblock %}

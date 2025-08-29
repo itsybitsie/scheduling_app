@@ -181,6 +181,33 @@ def clients():
     all_clients = Client.query.all()
     return render_template('clients.html', clients=all_clients)
 
+@app.route('/edit_client/<int:id>', methods=['GET', 'POST'])
+def edit_client(id):
+    client = Client.query.get(id)
+    if not client:
+        return redirect(url_for('clients'))
+
+    if request.method == 'POST':
+        client.name = request.form['name']
+        client.phone = request.form['phone']
+        client.email = request.form['email']
+        client.address = request.form['address']
+        client.notes = request.form['notes']
+        db.session.commit()
+        return redirect(url_for('clients'))
+
+    return render_template('edit_client.html', client=client, settings=settings)
+
+
+@app.route('/delete_client/<int:id>', methods=['POST'])
+def delete_client(id):
+    client = Client.query.get(id)
+    if client:
+        db.session.delete(client)
+        db.session.commit()
+    return redirect(url_for('clients'))
+
+
 @app.route('/settings', methods=['GET', 'POST'])
 def settings_page():
     global settings

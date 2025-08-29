@@ -85,3 +85,34 @@ button {
         grid-template-columns: repeat(2, 1fr);
     }
 }
+
+/* ---------- Buttons ---------- */
+.btn {
+    padding: 6px 12px;
+    border: none;
+    border-radius: 8px;
+    text-decoration: none;
+    font-size: 0.9rem;
+    cursor: pointer;
+    margin-left: 5px;
+}
+
+/* Edit button (lighter blue) */
+.btn-edit {
+    background-color: #4a90e2;  /* light blue */
+    color: white;
+}
+
+.btn-edit:hover {
+    background-color: #357ABD; /* darker hover */
+}
+
+/* Delete button (red for warning) */
+.btn-delete {
+    background-color: #e94e4e;
+    color: white;
+}
+
+.btn-delete:hover {
+    background-color: #c0392b;
+}
