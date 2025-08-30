@@ -4,8 +4,16 @@
 <form method="POST" class="settings-form">
     <label>Business Name:</label>
     <input type="text" name="business_name" value="{{ settings.business_name }}">
+    
     <label>Contact Email:</label>
     <input type="email" name="contact_email" value="{{ settings.contact_email }}">
+    
+    <label for="login_username">Login Username:</label>
+    <input type="text" id="login_username" name="login_username" value="{{ settings.get('login_username', '') }}" required>
+
+    <label for="login_password">Login Password:</label>
+    <input type="password" id="login_password" name="login_password" value="{{ settings.get('login_password', '') }}" required>
+
     <button type="submit">Save Settings</button>
 </form>
 {% endblock %}

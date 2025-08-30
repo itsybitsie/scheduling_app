@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, session
 import json
 import os
 import calendar
@@ -53,6 +53,37 @@ def save_settings(settings):
         json.dump(settings, f, indent=4)
 
 settings = load_settings()
+
+# Authentication
+
+app.secret_key = "supersecretkey" 
+
+@app.route("/login", methods =["GET", "POST"])
+def login():
+    error = None
+
+    if request.method == "POST":
+        username = request.form.get("username")
+        password = request.form.get("password")
+
+        if username == settings.get("login_username") and password == settings.get("login_password"):
+            session["logged_in"] = True
+            return redirect(url_for("schedule"))
+        else:
+            error = "Invalid Credentials"
+
+    return render_template("login.html", error=error)
+
+@app.route("/logout")
+def logout():
+    session.clear()
+    return redirect(url_for("login"))
+
+@app.before_request
+def require_login():
+    if request.endpoint not in ("login", "logout", "static") and not session.get("logged_in"):
+        return redirect(url_for("login"))
+
 
 @app.context_processor
 def inject_settings():
@@ -214,6 +245,8 @@ def settings_page():
     if request.method == 'POST':
         settings['business_name'] = request.form.get('business_name', 'My Business')
         settings['contact_email'] = request.form.get('contact_email', '')
+        settings['login_username'] = request.form.get('login_username', 'admin')
+        settings['login_password'] = request.form.get('login_password', 'password')
         save_settings(settings)
         return redirect(url_for('settings_page'))
 
